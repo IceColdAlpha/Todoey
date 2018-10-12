@@ -9,9 +9,13 @@
 import UIKit
 
 class TodoTableViewController: UITableViewController {
+    let defaults = UserDefaults.standard  //Use this for persistent data
     
     var itemArray = ["I win1","I win2","I win3"]
     override func viewDidLoad() {
+        if let items = defaults.array(forKey: "ToDoListArray") as?[String] {
+            itemArray = items
+        }
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -46,6 +50,7 @@ class TodoTableViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Todoey Item", message: "I dunno why she didn't show this ", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray,forKey: "ToDoListArray")
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
